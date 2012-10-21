@@ -21,11 +21,11 @@ TheGameCrafter::Client - A simple client to TGC's web services.
 
  my $game = tgc_get('game/528F18A2-F2C4-11E1-991D-40A48889CD00');
  
- my $session = tgc_post('session', { username => 'me', password => '123qwe', api_key => 'abcdefghijklmnopqrztuz' });
+ my $session = tgc_post('session', { username => 'me', password => '123qwe', api_key_id => 'abcdefghijklmnopqrztuz' });
 
- $game = tgc_put('game/528F18A2-F2C4-11E1-991D-40A48889CD00', { session => $session, name => 'Lacuna Expanse });
+ $game = tgc_put('game/528F18A2-F2C4-11E1-991D-40A48889CD00', { session_id => $session->{id}, name => 'Lacuna Expanse' });
 
- my $status = tgc_delete('game/528F18A2-F2C4-11E1-991D-40A48889CD00', { session => $session });
+ my $status = tgc_delete('game/528F18A2-F2C4-11E1-991D-40A48889CD00', { session_id => $session->{id} });
 
 =head1 DESCRIPTION
 

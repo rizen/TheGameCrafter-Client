@@ -26,6 +26,8 @@ cmp_deeply
           "params" => {
              "file" => "upload.txt"
           },    
+          "env" => ignore(),
+          "tracer" => ignore(),
           "uploads" => [
              {
                 "filename" => "upload.txt",

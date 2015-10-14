@@ -1,6 +1,9 @@
 use strict;
 use warnings;
 package TheGameCrafter::Client;
+BEGIN {
+  $TheGameCrafter::Client::VERSION = '0.0103';
+}
 
 use LWP::UserAgent;
 use HTTP::Request::Common;
@@ -14,6 +17,10 @@ our @EXPORT = qw(tgc_get tgc_delete tgc_put tgc_post);
 =head1 NAME
 
 TheGameCrafter::Client - A simple client to TGC's web services.
+
+=head1 VERSION
+
+version 0.0103
 
 =head1 SYNOPSIS
 
@@ -141,9 +148,16 @@ sub _create_uri {
 }
 
 sub _process_request {
-    my $response = LWP::UserAgent->new->request( @_ );
-    my $result = from_json($response->decoded_content); 
-    if ($response->is_success) {
+    _process_response(LWP::UserAgent->new->request( @_ ));
+}
+
+sub _process_response {
+    my $response = shift;
+    my $result = eval { from_json($response->decoded_content) }; 
+    if ($@) {
+        ouch 500, 'Server returned unparsable content.', { error => $@, content => $response->decoded_content };
+    }
+    elsif ($response->is_success) {
         return $result->{result};
     }
     else {
